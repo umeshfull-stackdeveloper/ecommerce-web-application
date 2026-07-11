@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authController_1 = require("../controllers/authController");
+const validation_1 = require("../middleware/validation");
+const validationSchemas_1 = require("../utils/validationSchemas");
+const auth_1 = require("../middleware/auth");
+const router = (0, express_1.Router)();
+router.post('/register', (0, validation_1.validate)(validationSchemas_1.registerSchema), authController_1.register);
+router.post('/login', (0, validation_1.validate)(validationSchemas_1.loginSchema), authController_1.login);
+router.post('/refresh-token', authController_1.refreshToken);
+router.get('/verify-email', authController_1.verifyEmail);
+router.post('/forgot-password', authController_1.forgotPassword);
+router.post('/reset-password', authController_1.resetPassword);
+router.get('/me', auth_1.protect, authController_1.getMe);
+// 2FA & OAuth Routes
+router.post('/oauth-login', authController_1.oauthLogin);
+router.post('/2fa/setup', auth_1.protect, authController_1.setup2FA);
+router.post('/2fa/verify', auth_1.protect, authController_1.verify2FA);
+router.post('/2fa/disable', auth_1.protect, authController_1.disable2FA);
+router.post('/2fa/login', authController_1.login2FA);
+exports.default = router;

@@ -1,0 +1,20 @@
+{
+  "name": "ecommerce-web-app",
+  "version": "1.0.0",
+  "description": "Professional E-Commerce Monorepo",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "postinstall": "npm install concurrently -g",
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w server && npm run build -w client",
+    "start": "npm run start -w server",
+    "seed": "npm run seed -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
