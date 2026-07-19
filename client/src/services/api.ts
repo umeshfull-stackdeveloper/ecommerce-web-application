@@ -1,7 +1,7 @@
 import { store } from '../store';
 import { setTokens, logout } from '../store/slices/authSlice';
 
-const BASE_URL = '/api';
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string>;
@@ -32,7 +32,7 @@ export const apiRequest = async (endpoint: string, options: RequestOptions = {})
   // Inject Authorization token
   const state = store.getState();
   const token = state.auth.accessToken;
-  
+
   const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
   };
@@ -63,7 +63,7 @@ export const apiRequest = async (endpoint: string, options: RequestOptions = {})
           if (refreshRes.ok) {
             const data = await refreshRes.json();
             const { accessToken, refreshToken: newRefreshToken } = data;
-            
+
             store.dispatch(setTokens({ accessToken, refreshToken: newRefreshToken }));
             isRefreshing = false;
             onRefreshed(accessToken);
